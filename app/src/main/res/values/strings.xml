@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MyTestBank</string>
+    <string name="stop_name">Вы вышли за рамки предложенных вопросов</string>
+    <string name="warning_text">Вы не можете дать ответ на данный вопрос, так как воспользовались подсказкой</string>
+    <string name="button_name_one">Следующий вопрос</string>
+    <string name="button_name_two">Завершить опрос</string>
+</resources>
