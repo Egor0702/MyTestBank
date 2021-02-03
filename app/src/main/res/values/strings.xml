@@ -4,4 +4,7 @@
     <string name="warning_text">Вы не можете дать ответ на данный вопрос, так как воспользовались подсказкой</string>
     <string name="button_name_one">Следующий вопрос</string>
     <string name="button_name_two">Завершить опрос</string>
+    <string name="type_of_unicorn_one">Красный единорог</string>
+    <string name="type_of_unicorn_two">Желтый единорог</string>
+    <string name="type_of_unicorn_three">Розовый единорог</string>
 </resources>
