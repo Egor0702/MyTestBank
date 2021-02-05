@@ -3,8 +3,10 @@ package marynych.rsue.mytestbank
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.widget.*
 import androidx.core.view.isVisible
+
 
 class MainActivity : AppCompatActivity() {
     lateinit var mTextQuestionView: TextView
@@ -13,14 +15,15 @@ class MainActivity : AppCompatActivity() {
     lateinit var variantTwo: CheckBox
     lateinit var variantThree: CheckBox
 
-    var arrayAnswer:MutableList<Int>() = mutableListOf()
+    var arrayAnswer:MutableList<Int> = mutableListOf()
     var mCurrIndex = 0
     lateinit var mBankQuestionCorn : List<Question>
-    )
-    override fun onCreate(savedInstanceState: Bundle?)
+
+    override fun onCreate(savedInstanceState: Bundle?){
     if (savedInstanceState != null){
     mCurrIndex = savedInstanceState.getInt("currentNumber", 0)
-    arrayAnswer = savedInstanceState.getIntArrayExtra("array", null)
+    var intArr: IntArray = savedInstanceState.getIntArray("array")!!
+        arrayAnswer = intArr.toMutableList()
     }
     
         super.onCreate(savedInstanceState)
@@ -49,49 +52,49 @@ class MainActivity : AppCompatActivity() {
           var answerVariantOne: Int = 0
             if (variantOne.isChecked()){
               if(mBankQuestionCorn[mCurrIndex].answerOne == textVariantOne)
-                answerVariantOne = (mBankQuestionCorn[mCurrIndex].keyOne
+                answerVariantOne = (mBankQuestionCorn[mCurrIndex].keyOne)
               if (mBankQuestionCorn[mCurrIndex].answerTwo == textVariantOne)
-                 answerVariantOne = (mBankQuestionCorn[mCurrIndex].keyTwo
+                 answerVariantOne = (mBankQuestionCorn[mCurrIndex].keyTwo)
                if (mBankQuestionCorn[mCurrIndex].answerThree == textVariantOne)
-                 answerVariantOne = (mBankQuestionCorn[mCurrIndex].keyThree   
+                 answerVariantOne = (mBankQuestionCorn[mCurrIndex].keyThree)
                            arrayAnswer.add( answerVariantOne)
             }else
-                 arrayAnser.remove( answerVariantOne)                    
+                 arrayAnswer.remove( answerVariantOne)
         }
         variantTwo.setOnCheckedChangeListener{buttonView: CompoundButton, isChecked: Boolean ->
             val textVariantTwo: String = variantTwo.text.toString()
           var answerVariantTwo: Int = 0
             if (variantOne.isChecked()){
               if(mBankQuestionCorn[mCurrIndex].answerOne == textVariantTwo)
-                answerVariantTwo = (mBankQuestionCorn[mCurrIndex].keyOne
+                answerVariantTwo = (mBankQuestionCorn[mCurrIndex].keyOne)
               if (mBankQuestionCorn[mCurrIndex].answerTwo == textVariantTwo)
-                 answerVariantTwo = (mBankQuestionCorn[mCurrIndex].keyTwo
+                 answerVariantTwo = (mBankQuestionCorn[mCurrIndex].keyTwo)
                if (mBankQuestionCorn[mCurrIndex].answerThree == textVariantTwo)
-                 answerVariantTwo = (mBankQuestionCorn[mCurrIndex].keyThree   
+                 answerVariantTwo = (mBankQuestionCorn[mCurrIndex].keyThree)
               arrayAnswer.add(answerVariantTwo)
             }else
-                 arrayAnser.remove( answerVariantTwo)   
+                 arrayAnswer.remove( answerVariantTwo)
         }
         variantThree.setOnCheckedChangeListener{buttonView: CompoundButton, isChecked: Boolean ->
             val textVariantThree: String = variantThree.text.toString()
           var answerVariantThree: Int = 0
             if (variantOne.isChecked()){
-              if(mBankQuestionCorn[mCurrIndex].answerOne == textVariantTwo)
-                answerVariantTwo = (mBankQuestionCorn[mCurrIndex].keyOne
-              if (mBankQuestionCorn[mCurrIndex].answerTwo == textVariantTwo)
-                 answerVariantTwo = (mBankQuestionCorn[mCurrIndex].keyTwo
-               if (mBankQuestionCorn[mCurrIndex].answerThree == textVariantTwo)
-                 answerVariantTwo = (mBankQuestionCorn[mCurrIndex].keyThree   
+              if(mBankQuestionCorn[mCurrIndex].answerOne == textVariantThree)
+                answerVariantThree = (mBankQuestionCorn[mCurrIndex].keyOne)
+              if (mBankQuestionCorn[mCurrIndex].answerTwo == textVariantThree)
+                 answerVariantThree = (mBankQuestionCorn[mCurrIndex].keyTwo)
+               if (mBankQuestionCorn[mCurrIndex].answerThree == textVariantThree)
+                 answerVariantThree = (mBankQuestionCorn[mCurrIndex].keyThree)
               arrayAnswer.add(answerVariantThree)
             }else
-                 arrayAnser.remove( answerVariantThree)   
+                 arrayAnswer.remove( answerVariantThree)
         }
-        }
+
         mNextButton.setOnClickListener {
            if(mNextButton.text == "Завершить опрос"){
                val intent = Intent(this, EndActivity::class.java)
-               arr : Array<Int> = arrayAnswer.toArray()
-               intent.putExtra("array", arr) //putIntArrayExtra ?
+               val arr : IntArray = arrayAnswer.toIntArray()
+               intent.putExtra("array", arr)
                startActivity(intent)
            }
             var nextIndex = mCurrIndex
@@ -102,13 +105,12 @@ class MainActivity : AppCompatActivity() {
             } else
                 Toast.makeText(this, R.string.stop_name, Toast.LENGTH_SHORT).show()
         }
-    }
-    override fun onSaveInstanceState(Bundle outState){
+        }
+    override fun onSaveInstanceState(outState : Bundle){
     super.onSaveInstanceState(outState)
         outState.putInt("currentNumber", mCurrIndex)
-        arr : Array<Int> = arrayAnswer.toArray()
-        outState.putIntArrayExtra("array", arr)
-        
+        var arr : IntArray = arrayAnswer.toIntArray()
+        outState.putIntArray("array", arr)
     }
 
         fun setQuestion(index:Int){
@@ -119,9 +121,4 @@ class MainActivity : AppCompatActivity() {
             variantTwo.setText(mBankQuestionCorn[index].answerTwo)
             variantThree.setText(mBankQuestionCorn[index].answerThree)
         }
-    fun testResult() : String{
-        val valuesList :MutableCollection<Int> = mapAnswer.values
-        var totalNumber = 0
-        for( i in valuesList)
-
 }
