@@ -15,9 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     var arrayAnswer:MutableList<Int>() = mutableListOf()
     var mCurrIndex = 0
-    val mBankQuestionCorn : List<Question> = listOf(
-        Question("Какой твой любимый цвет?", "Зеленый", 1,  "Розовый", 3,"Желтый", 2),
-        Question("Что лучше всего описывает тебя:", "Дружелюбный, открыт к общению", 3, "Люблю природу, тишину", 1, "Разве есть кто-то лучше меня?!", 2)
+    lateinit var mBankQuestionCorn : List<Question>
     )
     override fun onCreate(savedInstanceState: Bundle?)
     if (savedInstanceState != null){
@@ -27,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+    
+        mBankQuestionCorn = Question.questionBank
 
         mTextQuestionView = findViewById(R.id.text_question_view)
         variantOne = findViewById(R.id.variant_one)
