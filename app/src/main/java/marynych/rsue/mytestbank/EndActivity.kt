@@ -9,7 +9,7 @@ import android.widget.TextView
 
 class EndActivity : AppCompatActivity() {
     lateinit var resultOfTheText : TextView
-    lateinit var returnButton : Button
+
     lateinit var imageOfUnicorn : ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,13 +17,9 @@ class EndActivity : AppCompatActivity() {
         
         //здесь проинициализируем переменные тестового поля, кнопки и изображения
         resultOfTheText = findViewById(R.id.textView)
-        returnButton = findViewById(R.id.button_return)
-        imageOfUnicorn = findViewById(R.id.imageView2)
-        
-        returnButton.setOnClickListener{
-        val intent = Intent (this, MainActivity::class.java)
-            startActivity(intent)
-        }
+        imageOfUnicorn = findViewById(R.id.imageBackGround)
+
+        getNumbersOfUnicornGroups()
     }
     fun getNumbersOfUnicornGroups(){
         var firstTypeOfUnicorn : Int = 0
@@ -37,41 +33,55 @@ class EndActivity : AppCompatActivity() {
         3 -> thirdTypeOfUnicorn ++
         }
         }
+        println("first $firstTypeOfUnicorn second $secondTypeOfUnicorn third $thirdTypeOfUnicorn")
         getNameOfTheUnicorn(firstTypeOfUnicorn, secondTypeOfUnicorn, thirdTypeOfUnicorn)
     }
         fun getNameOfTheUnicorn(oneType : Int, twoType : Int, threeType : Int){
-        var name : Int = 0
+        var name : String = ""
         var imageRes : Int = 0
-        if (oneType > twoType && oneType > threeType){
-        name = R.string.type_of_unicorn_one
-        imageRes = R.drawable.red_unicorn
-        }
-        if (twoType > oneType && twoType > threeType){
-        name = R.string.type_of_unicorn_two
-        imageRes = R.drawable.yellow_unicorn_1
-        }
-        if(threeType > oneType && threeType > twoType){
-        name = R.string.type_of_unicorn_three
-        imageRes = R.drawable.pink_unicorn
-        }
-         if(oneType == twoType){
-        name = R.string.type_of_unicorn_one
-        imageRes = R.drawable.red_unicorn
-        }
-            if (oneType == threeType){
-        name = R.string.type_of_unicorn_three
-        imageRes = R.drawable.pink_unicorn
-        }
-            else{
-        name = R.string.type_of_unicorn_two
-        imageRes = R.drawable.yellow_unicorn_1
-        }
-        
+            println(oneType > twoType && oneType > threeType)
+            val i = 1
+            for (i in 1..1) {
+                if (oneType > twoType && oneType > threeType) {
+                    name = getString(R.string.type_of_unicorn_one)
+                    imageRes = R.drawable.red_unicorn
+                    break
+                }
+                if (twoType > oneType && twoType > threeType) {
+                    name = getString(R.string.type_of_unicorn_two)
+                    imageRes = R.drawable.yellow_unicorn_1
+                    break
+                }
+                if (threeType > oneType && threeType > twoType) {
+                    name = getString(R.string.type_of_unicorn_three)
+                    imageRes = R.drawable.pink_unicorn
+                    break
+                }
+                if (oneType == twoType) {
+                    name = getString(R.string.type_of_unicorn_one)
+                    imageRes = R.drawable.red_unicorn
+                    break
+                }
+                if (oneType == threeType) {
+                    name = getString(R.string.type_of_unicorn_three)
+                    imageRes = R.drawable.pink_unicorn
+                    break
+                }
+                else {
+                    name = getString(R.string.type_of_unicorn_two)
+                    imageRes = R.drawable.yellow_unicorn_1
+                }
+            }
             setResultTest(name, imageRes)
     }
-    fun setResultTest(name: Int, imageRes:Int){
-    resultOfTheText.setText(name)
+    fun setResultTest(name: String, imageRes:Int){
+    resultOfTheText.setText("Ты $name")
     imageOfUnicorn.setImageResource(imageRes)
     }
-    
+
+    override fun onBackPressed() {
+        val intent = Intent (this, MainActivity::class.java)
+        startActivity(intent)
+        super.onBackPressed()
+    }
 }

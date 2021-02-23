@@ -4,16 +4,19 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.util.Log
 import android.widget.*
 import androidx.core.view.isVisible
 
 
 class MainActivity : AppCompatActivity() {
+    private val TAG = "MainActivity"
     lateinit var mTextQuestionView: TextView // объявлем переменну типа TextView
     lateinit var mNextButton: Button // объявлем переменну типа Button
     lateinit var variantOne: CheckBox // объявлем переменну типа CheckBox
     lateinit var variantTwo: CheckBox // объявлем переменну типа CheckBox
     lateinit var variantThree: CheckBox // объявлем переменну типа CheckBox
+    lateinit var numbersText: TextView // объявляем переменную типа TextView
 
     var arrayAnswer:MutableList<Int> = mutableListOf() // инициализируем переменную, которая будет хранить ответы пользователя
     var mCurrIndex = 0 // переменная, которая будет играть роль счетчика вопросов (с помощью нее будет определен текущий вопрос)
@@ -25,18 +28,16 @@ class MainActivity : AppCompatActivity() {
     var intArr: IntArray = savedInstanceState.getIntArray("array")!!
         arrayAnswer = intArr.toMutableList()
     }
-    
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-    
         mBankQuestionCorn = Question.questionBank // присваиваем перемнную значение из класса Question, где хранятся вопросы
-
 
         mTextQuestionView = findViewById(R.id.text_question_view)
         variantOne = findViewById(R.id.variant_one)
         variantTwo = findViewById(R.id.variant_two)
         variantThree = findViewById(R.id.variant_three)
         mNextButton = findViewById(R.id.show_answer)
+        numbersText = findViewById(R.id.number_question)
 
         mTextQuestionView.setText(mBankQuestionCorn[mCurrIndex].question) // устанавливаем первый вопрос на экране
         mTextQuestionView.setOnClickListener { // реализуем возможность, чтобы пользователь мог вызвать следующий вопрос нажатием на экран.
@@ -48,24 +49,32 @@ class MainActivity : AppCompatActivity() {
             } else  // если пользователь все-таки вышел за рамки, то всплывает уведомление
                 Toast.makeText(this, R.string.stop_name, Toast.LENGTH_SHORT).show()
         }
+        numbersText.setText("Вопрос ${mCurrIndex+1} / ${mBankQuestionCorn.size}")
+        variantOne.setText(mBankQuestionCorn[mCurrIndex].answerOne)
         variantOne.setOnCheckedChangeListener{ compoundButton: CompoundButton, b: Boolean ->  // если пользователь нажал на первый вариант ответа ...
            val textVariantOne: String = variantOne.text.toString() // присваиваем этот полюбившийся текст первого ваианта на вопрос
           var answerVariantOne: Int = 0 // устанавливаем значение по умолчанию
             if (variantOne.isChecked()){ // если пользователь нажал на флажок чекбокса, то выполняется код заключенный в скобках
-              if(mBankQuestionCorn[mCurrIndex].answerOne == textVariantOne) // если вариант ответа описанный в данном поле совпдает со значением заключенным в переменной данного Question,
+                setEnableCheck(variantOne)
+                if(mBankQuestionCorn[mCurrIndex].answerOne == textVariantOne) // если вариант ответа описанный в данном поле совпдает со значением заключенным в переменной данного Question,
                 answerVariantOne = (mBankQuestionCorn[mCurrIndex].keyOne) // то присваиваем answerVariantOne ее значение
               if (mBankQuestionCorn[mCurrIndex].answerTwo == textVariantOne)
                  answerVariantOne = (mBankQuestionCorn[mCurrIndex].keyTwo)
                if (mBankQuestionCorn[mCurrIndex].answerThree == textVariantOne)
                  answerVariantOne = (mBankQuestionCorn[mCurrIndex].keyThree)
                            arrayAnswer.add( answerVariantOne)
-            }else
-                 arrayAnswer.remove( answerVariantOne) // удаляем этот ответ из массива
+            }else {
+                Log.d(TAG,"сняли флаг в первом поле и перешли в поле else")
+                arrayAnswer.remove(answerVariantOne) // удаляем этот ответ из массива
+                setFreedomCheck(variantOne)
+            }
         }
+        variantTwo.setText(mBankQuestionCorn[mCurrIndex].answerTwo)
         variantTwo.setOnCheckedChangeListener{buttonView: CompoundButton, isChecked: Boolean ->
             val textVariantTwo: String = variantTwo.text.toString()
           var answerVariantTwo: Int = 0
-            if (variantOne.isChecked()){
+            if (variantTwo.isChecked()){
+                setEnableCheck(variantTwo)
               if(mBankQuestionCorn[mCurrIndex].answerOne == textVariantTwo)
                 answerVariantTwo = (mBankQuestionCorn[mCurrIndex].keyOne)
               if (mBankQuestionCorn[mCurrIndex].answerTwo == textVariantTwo)
@@ -73,13 +82,18 @@ class MainActivity : AppCompatActivity() {
                if (mBankQuestionCorn[mCurrIndex].answerThree == textVariantTwo)
                  answerVariantTwo = (mBankQuestionCorn[mCurrIndex].keyThree)
               arrayAnswer.add(answerVariantTwo)
-            }else
-                 arrayAnswer.remove( answerVariantTwo)
+            }else {
+                Log.d(TAG,"сняли флаг во втором поле и перешли в поле else")
+                arrayAnswer.remove(answerVariantTwo)
+                setFreedomCheck(variantTwo)
+            }
         }
+        variantThree.setText(mBankQuestionCorn[mCurrIndex].answerThree)
         variantThree.setOnCheckedChangeListener{buttonView: CompoundButton, isChecked: Boolean ->
             val textVariantThree: String = variantThree.text.toString()
           var answerVariantThree: Int = 0
-            if (variantOne.isChecked()){
+            if (variantThree.isChecked()){
+                setEnableCheck(variantThree)
               if(mBankQuestionCorn[mCurrIndex].answerOne == textVariantThree)
                 answerVariantThree = (mBankQuestionCorn[mCurrIndex].keyOne)
               if (mBankQuestionCorn[mCurrIndex].answerTwo == textVariantThree)
@@ -87,8 +101,11 @@ class MainActivity : AppCompatActivity() {
                if (mBankQuestionCorn[mCurrIndex].answerThree == textVariantThree)
                  answerVariantThree = (mBankQuestionCorn[mCurrIndex].keyThree)
               arrayAnswer.add(answerVariantThree)
-            }else
-                 arrayAnswer.remove( answerVariantThree)
+            }else {
+                Log.d(TAG,"сняли флаг в третьем поле и перешли в поле else")
+                arrayAnswer.remove(answerVariantThree)
+                setFreedomCheck(variantThree)
+            }
         }
 
         mNextButton.setOnClickListener { // реализуем функциональность кнопки, выводящей следующий вопрос
@@ -103,6 +120,9 @@ class MainActivity : AppCompatActivity() {
             if (nextIndex >= 0 && nextIndex < mBankQuestionCorn.size) { // если переменная находится в диапозоне массива, то выполняем следующий код:
                 mCurrIndex = nextIndex // присвиваем "счеткику" значение локальной переменной, так как теперь это безопасно, мы знаем, что мы в диапозоне нашего банка вопросов
                 setQuestion(mCurrIndex) // передаем значение этой переменной в метод setQuestion()
+                setCheck() // снимаем флаг с ответом
+                setFreedomCheck() // снимаем блокировку со всех CheckBox
+                numbersText.setText("Вопрос ${mCurrIndex+1} / ${mBankQuestionCorn.size}")
             } else // если пользователь вышел за пределы банка вопросов, то
                 Toast.makeText(this, R.string.stop_name, Toast.LENGTH_SHORT).show() // предупреждаем его об этом в уведомлении и не передаем ничего в метод setQuestion()
         }
@@ -111,7 +131,7 @@ class MainActivity : AppCompatActivity() {
     super.onSaveInstanceState(outState)
         outState.putInt("currentNumber", mCurrIndex) // текущий вопрос
         var arr : IntArray = arrayAnswer.toIntArray() // имеющиеся ответы пользователя
-        outState.putIntArray("array", arr)  // помещаем это в Bundle, чтобы при работе метода onCreate записать данные значения в соответсвующие переменные
+        outState.putIntArray("ar-ray", arr)  // помещаем это в Bundle, чтобы при работе метода onCreate записать данные значения в соответсвующие переменные
     }
 
         fun setQuestion(index:Int){ // этот метод устанавливает вопрос, отображающийся на текстовом поле приложения
@@ -122,4 +142,63 @@ class MainActivity : AppCompatActivity() {
             variantTwo.setText(mBankQuestionCorn[index].answerTwo)
             variantThree.setText(mBankQuestionCorn[index].answerThree)
         }
-}
+    fun setCheck(){ // с помощью данного метода мы снимаем флаги, оставленные пользователем
+        if(variantOne.isChecked())
+            variantOne.setChecked(false)
+        if(variantTwo.isChecked())
+            variantTwo.setChecked(false)
+        if(variantThree.isChecked())
+            variantThree.setChecked(false)
+    }
+    fun setEnableCheck(check : CheckBox){ // когда пользователь выберет ответ, заблокируем остальные кнопки
+            when (check){
+                variantOne -> {variantTwo.isClickable = false
+                               variantTwo.isFocusable = false
+                               variantThree.isClickable = false
+                               variantThree.isFocusable = false
+                    Log.d(TAG, "setEnableCheck заблокировали два и три")}
+                variantTwo -> {variantOne.isClickable = false
+                               variantOne.isFocusable = false
+                               variantThree.isClickable = false
+                               variantThree.isFocusable = false
+                    Log.d(TAG, "setEnableCheck заблокировали один и три")}
+                variantThree ->{variantOne.isClickable = false
+                                variantOne.isFocusable = false
+                                variantTwo.isClickable = false
+                                variantTwo.isFocusable = false
+                    Log.d(TAG, "setEnableCheck заблокировали один и два")}
+                else -> Log.d(TAG, "ошибка в setEnableCheck")
+            }
+        }
+    fun setFreedomCheck(check : CheckBox){
+        when (check) {
+            variantOne -> {
+                variantTwo.isClickable = true
+                variantTwo.isFocusable = true
+                variantThree.isClickable = true
+                variantThree.isFocusable = true
+            }
+            variantTwo -> {
+                variantOne.isClickable = true
+                variantOne.isFocusable = true
+                variantThree.isClickable = true
+                variantThree.isFocusable = true
+            }
+            variantThree -> {
+                variantOne.isClickable = true
+                variantOne.isFocusable = true
+                variantTwo.isClickable = true
+                variantTwo.isFocusable = true
+            }
+            else -> Log.d(TAG, "ошибка в setFreedomCheck")
+        }
+    }
+    fun setFreedomCheck(){
+        variantOne.isClickable = true
+        variantOne.isFocusable = true
+        variantTwo.isClickable = true
+        variantTwo.isFocusable = true
+        variantThree.isClickable = true
+        variantThree.isFocusable = true
+    }
+    }
