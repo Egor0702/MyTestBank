@@ -44,7 +44,7 @@ class EndActivity : AppCompatActivity() {
             for (i in 1..1) {
                 if (oneType > twoType && oneType > threeType) {
                     name = getString(R.string.type_of_unicorn_one)
-                    imageRes = R.drawable.red_unicorn
+                    imageRes = R.drawable.red_unicorn300
                     break
                 }
                 if (twoType > oneType && twoType > threeType) {
@@ -54,17 +54,17 @@ class EndActivity : AppCompatActivity() {
                 }
                 if (threeType > oneType && threeType > twoType) {
                     name = getString(R.string.type_of_unicorn_three)
-                    imageRes = R.drawable.pink_unicorn
+                    imageRes = R.drawable.pink_unicorn1
                     break
                 }
                 if (oneType == twoType) {
                     name = getString(R.string.type_of_unicorn_one)
-                    imageRes = R.drawable.red_unicorn
+                    imageRes = R.drawable.red_unicorn300
                     break
                 }
                 if (oneType == threeType) {
                     name = getString(R.string.type_of_unicorn_three)
-                    imageRes = R.drawable.pink_unicorn
+                    imageRes = R.drawable.pink_unicorn1
                     break
                 }
                 else {
