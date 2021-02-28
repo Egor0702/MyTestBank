@@ -2,6 +2,8 @@
     <!-- Base application theme. -->
         <!-- Primary brand color. -->
     <style name="Theme.MyTestBank"  parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>

@@ -4,28 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFC0CB"
     tools:context=".EndActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/imageBackGround"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
+        android:layout_marginBottom="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:src="@drawable/yellow_unicorn" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="500dp"
-        android:textColor="@color/black"
+        android:layout_marginBottom="16dp"
+        android:textColor="#ff0000"
         android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageBackGround"
         app:layout_constraintStart_toStartOf="@+id/imageBackGround"
-        app:layout_constraintTop_toTopOf="@+id/imageBackGround"
+        app:layout_constraintTop_toBottomOf="@+id/imageBackGround"
         tools:text="TextView" />
-
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

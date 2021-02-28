@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     var arrayAnswer:MutableList<Int> = mutableListOf() // инициализируем переменную, которая будет хранить ответы пользователя
     var mCurrIndex = 0 // переменная, которая будет играть роль счетчика вопросов (с помощью нее будет определен текущий вопрос)
     lateinit var mBankQuestionCorn : List<Question> // банк вопросов
+    var flag : Boolean = false // данная переменная будет служить фдагом, указывающим на то выбрал ли пользователь какой-нибудь вариант ответа (true) или нет (false)
 
     override fun onCreate(savedInstanceState: Bundle?){
     if (savedInstanceState != null){ // проверяем запуск данной активности и если это так присваиваем переменным значением
@@ -55,7 +56,8 @@ class MainActivity : AppCompatActivity() {
            val textVariantOne: String = variantOne.text.toString() // присваиваем этот полюбившийся текст первого ваианта на вопрос
           var answerVariantOne: Int = 0 // устанавливаем значение по умолчанию
             if (variantOne.isChecked()){ // если пользователь нажал на флажок чекбокса, то выполняется код заключенный в скобках
-                setEnableCheck(variantOne)
+                flag = true // пользователь выбрал вариант ответа
+                setEnableCheck(variantOne) // блокируем все остальные поля с ответами
                 if(mBankQuestionCorn[mCurrIndex].answerOne == textVariantOne) // если вариант ответа описанный в данном поле совпдает со значением заключенным в переменной данного Question,
                 answerVariantOne = (mBankQuestionCorn[mCurrIndex].keyOne) // то присваиваем answerVariantOne ее значение
               if (mBankQuestionCorn[mCurrIndex].answerTwo == textVariantOne)
@@ -67,6 +69,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG,"сняли флаг в первом поле и перешли в поле else")
                 arrayAnswer.remove(answerVariantOne) // удаляем этот ответ из массива
                 setFreedomCheck(variantOne)
+                flag = false // снимаем флаг
             }
         }
         variantTwo.setText(mBankQuestionCorn[mCurrIndex].answerTwo)
@@ -74,6 +77,7 @@ class MainActivity : AppCompatActivity() {
             val textVariantTwo: String = variantTwo.text.toString()
           var answerVariantTwo: Int = 0
             if (variantTwo.isChecked()){
+                flag = true // пользователь выбрал вариант ответа
                 setEnableCheck(variantTwo)
               if(mBankQuestionCorn[mCurrIndex].answerOne == textVariantTwo)
                 answerVariantTwo = (mBankQuestionCorn[mCurrIndex].keyOne)
@@ -86,6 +90,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG,"сняли флаг во втором поле и перешли в поле else")
                 arrayAnswer.remove(answerVariantTwo)
                 setFreedomCheck(variantTwo)
+                flag = false // снимаем флаг
             }
         }
         variantThree.setText(mBankQuestionCorn[mCurrIndex].answerThree)
@@ -93,6 +98,7 @@ class MainActivity : AppCompatActivity() {
             val textVariantThree: String = variantThree.text.toString()
           var answerVariantThree: Int = 0
             if (variantThree.isChecked()){
+                flag = true // пользователь выбрал вариант ответа
                 setEnableCheck(variantThree)
               if(mBankQuestionCorn[mCurrIndex].answerOne == textVariantThree)
                 answerVariantThree = (mBankQuestionCorn[mCurrIndex].keyOne)
@@ -105,6 +111,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG,"сняли флаг в третьем поле и перешли в поле else")
                 arrayAnswer.remove(answerVariantThree)
                 setFreedomCheck(variantThree)
+                flag = false // снимаем флаг
             }
         }
 
@@ -114,15 +121,15 @@ class MainActivity : AppCompatActivity() {
                val arr : IntArray = arrayAnswer.toIntArray() // создаем массив типа IntArray на основе переменной arrayAnswer
                intent.putExtra("array", arr) // передаем в интент переменную arr и ключ "array"
                startActivity(intent) // передаем в метод интент и переходим к новой активити
+               return@setOnClickListener
            }
             var nextIndex = mCurrIndex // присваиваем переменной nextIndex текущее значение счеткика вопросов. Мы делаем это не напрямую с mCurrIndex, так как может оазаться, что мы выходим за границы массива
             nextIndex++ // инкрементируем переменную
-            if (nextIndex >= 0 && nextIndex < mBankQuestionCorn.size) { // если переменная находится в диапозоне массива, то выполняем следующий код:
+            if ((nextIndex >= 0 && nextIndex < mBankQuestionCorn.size) && flag) { // если переменная находится в диапозоне массива и пользователь выбрал какой-нибудь вариант ответа, то выполняем следующий код:
                 mCurrIndex = nextIndex // присвиваем "счеткику" значение локальной переменной, так как теперь это безопасно, мы знаем, что мы в диапозоне нашего банка вопросов
                 setQuestion(mCurrIndex) // передаем значение этой переменной в метод setQuestion()
                 setCheck() // снимаем флаг с ответом
                 setFreedomCheck() // снимаем блокировку со всех CheckBox
-                numbersText.setText("Вопрос ${mCurrIndex+1} / ${mBankQuestionCorn.size}")
             } else // если пользователь вышел за пределы банка вопросов, то
                 Toast.makeText(this, R.string.stop_name, Toast.LENGTH_SHORT).show() // предупреждаем его об этом в уведомлении и не передаем ничего в метод setQuestion()
         }
@@ -131,7 +138,7 @@ class MainActivity : AppCompatActivity() {
     super.onSaveInstanceState(outState)
         outState.putInt("currentNumber", mCurrIndex) // текущий вопрос
         var arr : IntArray = arrayAnswer.toIntArray() // имеющиеся ответы пользователя
-        outState.putIntArray("ar-ray", arr)  // помещаем это в Bundle, чтобы при работе метода onCreate записать данные значения в соответсвующие переменные
+        outState.putIntArray("array", arr)  // помещаем это в Bundle, чтобы при работе метода onCreate записать данные значения в соответсвующие переменные
     }
 
         fun setQuestion(index:Int){ // этот метод устанавливает вопрос, отображающийся на текстовом поле приложения
@@ -141,6 +148,7 @@ class MainActivity : AppCompatActivity() {
             variantOne.setText(mBankQuestionCorn[index].answerOne)
             variantTwo.setText(mBankQuestionCorn[index].answerTwo)
             variantThree.setText(mBankQuestionCorn[index].answerThree)
+            numbersText.setText("Вопрос ${mCurrIndex+1} / ${mBankQuestionCorn.size}") // устанавливаем текущий номер вопроса в текстовом поле вверху
         }
     fun setCheck(){ // с помощью данного метода мы снимаем флаги, оставленные пользователем
         if(variantOne.isChecked())

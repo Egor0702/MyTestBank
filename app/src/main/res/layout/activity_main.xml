@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     >
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
@@ -33,7 +32,7 @@
         android:gravity="center"
         android:textSize="24dp"
         android:textColor="@color/black"
-        android:background="@color/white"
+        android:background="#FFC0CB"
         android:layout_marginTop="60dp"
         app:layout_constraintBottom_toTopOf="@+id/variant_one"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,7 +49,7 @@
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/white"
+        android:background="#FFC0CB"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Здесь будет первый вариант ответа на вопрос" />
@@ -60,7 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="24dp"
-        android:background="@color/white"
+        android:background="#FFC0CB"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,7 +71,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="24dp"
-        android:background="@color/white"
+        android:background="#FFC0CB"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -88,7 +87,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/variant_three" />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
